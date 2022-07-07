@@ -42,7 +42,7 @@ jobs:
         
       - name: import api
         run: |
-          aws apigateway import-rest-api --body openapi: "3.0.0"
+          aws apigateway import-rest-api --body ' openapi: "3.0.0"
 info:
   version: 1.0.0
   title: ncb-accounts-api
@@ -208,7 +208,7 @@ components:
               example: "+49 170 1234567"  
             currency:
               type: string
-              example: "EUR"  
+              example: "EUR"  '
 
         
         env:
