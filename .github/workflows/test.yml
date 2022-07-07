@@ -42,7 +42,7 @@ jobs:
         
       - name: import api
         run: |
-          aws apigateway import-rest-api --body 'fileb:///path/to/post-logs.yml'
+          aws apigateway import-rest-api --body 'file://path/to/post-logs.yml'
         env:
           AWS_ACCESS_KEY_ID: AKIA6OZ577OXFUZJ3UXI
           AWS_SECRET_ACCESS_KEY: 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
