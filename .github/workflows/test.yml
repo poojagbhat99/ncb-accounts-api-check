@@ -42,7 +42,175 @@ jobs:
         
       - name: import api
         run: |
-          aws apigateway import-rest-api --body 'file://path/to/post-logs.yml'
+          aws apigateway import-rest-api --body openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: ncb-accounts-api
+  description: API to move the logs data from source to target
+
+servers:
+- url: http://ncb-accounts-api.us-e2.cloudhub.io/api
+  description: API implementation in Mulesoft 
+
+
+paths:
+  /accounts/{accountid}/monthlystatements/move:
+    post:
+      tags:
+        - Account Statements
+      summary: Endpoint to move the monthly statements.
+      description: Move the monthly statements from source to destination.
+      operationId: movemonthlystatements
+      parameters:
+      
+        - name: accountid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "12352"
+        - name: app_client_id
+          in : header
+          required: true
+          schema:
+            type: string
+            example: "fhgf366739dsa897fd"    
+        - name: monthandyear
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{2}-\d{4}$'
+            example: "02-2022"
+           
+      responses:
+        '200':
+          description: Success Data Response
+          content:
+            application/json: 
+              example:
+                Message: 02-2022.txt has been copied to the target location 12345/02-2022.txt 
+        "400":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: Bad Request.
+        "401":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: Unauthorized.
+        "404":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: No file present in the source.                               
+        "500":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: Internal server error at the source.        
+  /api/accounts/{accountid}:
+    get:
+      tags:
+        - apilogs
+      summary: Endpoint to move the logs data.
+      description: to move the Logs data.
+      operationId: getaccount-details
+      parameters:
+        - name: accountid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "12352"
+        - name: app_client_id
+          in : header
+          required: true
+          schema:
+            type: string
+            example: "fhgf366739dsa897fd"     
+      responses:
+        "200":
+          description: Success Data Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+        "400":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: Bad Request.
+        "401":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: Unauthorized.
+        "404":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: Account not found.
+        "500":
+          description: Error Response
+          content:
+            application/json:
+              example:
+                Message: Internal server error.
+
+
+
+  /external/api:
+    post:
+      deprecated: true
+      tags:
+        - apilogs
+      summary: Endpoint to make external api calls for logs data.
+      description: to make external api calls for logs data.  
+      operationId: callexternal-api
+      responses:
+        "200":
+          description: Success Data Response
+          content:
+            application/json:
+              example:
+                             
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        account:
+          type: object
+          properties:
+            iban:
+              type: string
+              example: "DE27100777770209299700"
+            bban:
+              type: string
+              example: "BARC12345612345678"
+            pan:
+              type: string
+              example: "5409050000000000"  
+            maskedPan:
+              type: string
+              example: "123456xxxxxx1234"
+            msisdn:
+              type: string
+              example: "+49 170 1234567"  
+            currency:
+              type: string
+              example: "EUR"  
+
+        
         env:
           AWS_ACCESS_KEY_ID: AKIA6OZ577OXFUZJ3UXI
           AWS_SECRET_ACCESS_KEY: OXR7xSMc+Klzxsh56z7qlVAi3kvVSLdiqro1+ZAH
