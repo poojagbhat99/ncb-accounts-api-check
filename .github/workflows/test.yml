@@ -46,6 +46,11 @@ jobs:
         
       - name: list api
         run: aws apigateway get-rest-apis 
+        env:
+          AWS_ACCESS_KEY_ID: AKIA6OZ577OXFUZJ3UXI
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: 'us-east-1'
+        
 
         
        
