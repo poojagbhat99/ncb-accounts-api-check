@@ -40,8 +40,9 @@ jobs:
         # uses: aws-actions/setup-sam@8cbdb0241613f319ffe1c1b9f9d8f54ce772b5d3
         uses: aws-actions/setup-sam@v2
         with:
-          aws-access-key-id: AKIA6OZ577OXFUZJ3UXI
-          aws-secret-access-key: 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
-          aws-region: us-east-1
+          # The AWS SAM CLI version to install
+          version: v2
+          # The Python interpreter to use for AWS SAM CLI
+          python: 3.0
         
         
