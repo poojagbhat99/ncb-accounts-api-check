@@ -52,7 +52,7 @@ jobs:
           AWS_DEFAULT_REGION: 'us-east-1'
           
       - name: import rest api
-        run: aws apigateway import-rest-api --body 'file:///post-logs.yml' 
+        run: aws apigateway get-resource --rest-api-id z2g6moe610  --resource-id f5xm7ef84h
         env:
           AWS_ACCESS_KEY_ID: AKIA6OZ577OXFUZJ3UXI
           AWS_SECRET_ACCESS_KEY: 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
