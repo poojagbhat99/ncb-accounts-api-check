@@ -15,26 +15,16 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  deploy-to-dev:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    environment: 'test'
+    environment: 'dev'
 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
           
       - name: Setup AWS SAM CLI
         # You may pin to the exact commit or the version.
@@ -46,18 +36,97 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         
       - name: list api
-        run: aws apigateway get-rest-api --rest-api-id z2g6moe610 
+        run: aws apigateway get-rest-api --rest-api-id ${{ secrets.REST_API_KEY }} 
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           
       - name: deploy rest api
-        run: aws apigateway create-deployment --rest-api-id z2g6moe610 --stage-name dev --stage-description 'Development Stage' --description 'First deployment to the dev stage'
+        run: aws apigateway create-deployment --rest-api-id ${{ secrets.REST_API_KEY }} --stage-name dev --stage-description 'Development Stage' --description 'First deployment to the dev stage'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          
+ 
+          
+  deploy-to-uat:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+      environment: 'uat'
+
+
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v3
+
+
+        - name: Setup AWS SAM CLI
+          # You may pin to the exact commit or the version.
+          # uses: aws-actions/setup-sam@8cbdb0241613f319ffe1c1b9f9d8f54ce772b5d3
+          uses: aws-actions/setup-sam@v2
+          with:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+        - name: list api
+          run: aws apigateway get-rest-api --rest-api-id ${{ secrets.REST_API_KEY }} 
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+        - name: deploy rest api
+          run: aws apigateway create-deployment --rest-api-id ${{ secrets.REST_API_KEY }} --stage-name uat --stage-description 'Development Stage' --description 'First deployment to the dev stage'
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+            
+  deploy-to-test:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+      environment: 'test'
+
+
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v3
+
+
+
+        - name: Setup AWS SAM CLI
+          # You may pin to the exact commit or the version.
+          # uses: aws-actions/setup-sam@8cbdb0241613f319ffe1c1b9f9d8f54ce772b5d3
+          uses: aws-actions/setup-sam@v2
+          with:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+        - name: list api
+          run: aws apigateway get-rest-api --rest-api-id ${{ secrets.REST_API_KEY }} 
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+        - name: deploy rest api
+          run: aws apigateway create-deployment --rest-api-id ${{ secrets.REST_API_KEY }} --stage-name test --stage-description 'test Stage' --description 'First deployment to the test stage'
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+            
+  
+          
+
+          
+
           
           
         
