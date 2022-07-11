@@ -18,7 +18,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    environment: 'test'
+
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -40,16 +40,16 @@ jobs:
         # uses: aws-actions/setup-sam@8cbdb0241613f319ffe1c1b9f9d8f54ce772b5d3
         uses: aws-actions/setup-sam@v2
         with:
-          AWS_ACCESS_KEY_ID: AKIA6OZ577OXFUZJ3UXI
-          AWS_SECRET_ACCESS_KEY: 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
-          AWS_DEFAULT_REGION: 'us-east-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         
       - name: list api
         run: aws apigateway get-rest-api --rest-api-id z2g6moe610 
         env:
-          AWS_ACCESS_KEY_ID: AKIA6OZ577OXFUZJ3UXI
-          AWS_SECRET_ACCESS_KEY: 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
-          AWS_DEFAULT_REGION: 'us-east-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           
       - name: deploy rest api
         run: aws apigateway create-deployment --rest-api-id z2g6moe610 --stage-name dev --stage-description 'Development Stage' --description 'First deployment to the dev stage'
