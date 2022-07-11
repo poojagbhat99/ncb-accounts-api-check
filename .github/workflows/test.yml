@@ -54,9 +54,9 @@ jobs:
       - name: deploy rest api
         run: aws apigateway create-deployment --rest-api-id z2g6moe610 --stage-name dev --stage-description 'Development Stage' --description 'First deployment to the dev stage'
         env:
-          AWS_ACCESS_KEY_ID: AKIA6OZ577OXFUZJ3UXI
-          AWS_SECRET_ACCESS_KEY: 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
-          AWS_DEFAULT_REGION: 'us-east-1'
+          AWS_ACCESS_KEY_ID: $
+          AWS_SECRET_ACCESS_KEY: $
+          AWS_DEFAULT_REGION: $
           
           
         
