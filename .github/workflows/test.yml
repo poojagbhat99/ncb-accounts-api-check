@@ -77,7 +77,7 @@ jobs:
             AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
         - name: deploy rest api
-          run: aws apigateway create-deployment --rest-api-id ${{ secrets.REST_API_KEY }} --stage-name uat --stage-description 'Development Stage' --description 'First deployment to the dev stage'
+          run: aws apigateway create-deployment --rest-api-id ${{ secrets.REST_API_KEY }} --stage-name uat --stage-description 'Development Stage' --description 'First deployment to the uat stage'
           env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
